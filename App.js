@@ -14,8 +14,9 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
-import {addTodo} from './src/services/models/todos/actions';
+import {addTodo, removeTodo} from './src/services/models/todos/actions';
 import openRealm from './src/services/realm';
 import {watch} from './src/services/realm/watch';
 
@@ -63,7 +64,21 @@ const App = () => {
         data={todos}
         keyExtractor={item => item._id}
         renderItem={({item}) => (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onLongPress={() =>
+              Alert.alert(
+                'Tem certeza?',
+                'Ao remover este Todo não é possível desfazer.',
+                [
+                  {
+                    text: 'Cancelar',
+                    onPress: () => console.log('Cancel pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'Sim', onPress: () => removeTodo(item)},
+                ],
+              )
+            }>
             <View style={styles.itemView}>
               <Text style={styles.itemText}>{item.title}</Text>
 
