@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import {addTodo} from './src/services/models/todos/actions';
 import openRealm from './src/services/realm';
+import {watch} from './src/services/realm/watch';
 
 const App = () => {
   const [todo, setTodo] = useState('');
@@ -42,9 +43,11 @@ const App = () => {
   const loadRealm = async () => {
     const realm = await openRealm();
 
+    watch(realm, setTodos);
+
     const todos = realm.objects('Todo');
 
-    setTodos(todos);
+    setTodos(todos.sorted('date', true));
   };
 
   return (
