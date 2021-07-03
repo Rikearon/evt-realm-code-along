@@ -15,6 +15,26 @@ const Details = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
+  useEffect(() => {
+    hydrateState();
+  }, []);
+
+  const hydrateState = () => {
+    const todo = route.params?.todo;
+
+    console.log('todo on details: ', todo);
+
+    if (todo && todo.title) setTitle(todo.title);
+  };
+
+  const save = async () => {
+    const todo = route.params?.todo;
+
+    await updateTodo(todo, {title});
+
+    navigation.navigate('Home');
+  };
+
   return (
     <View
       style={{
@@ -32,7 +52,7 @@ const Details = () => {
           returnKeyType="done"
         />
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={save}>
           <Text style={styles.addButtonText}>Salvar</Text>
         </TouchableOpacity>
       </View>

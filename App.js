@@ -6,6 +6,7 @@
  * @flow strict-local
  */
 
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
@@ -23,6 +24,8 @@ import {watch} from './src/services/realm/watch';
 const App = () => {
   const [todo, setTodo] = useState('');
   const [todos, setTodos] = useState([]);
+
+  const navigation = useNavigation();
 
   // const handleAddTodo = () => {
   //   setTodos([...todos, todo]);
@@ -65,6 +68,7 @@ const App = () => {
         keyExtractor={item => item._id}
         renderItem={({item}) => (
           <TouchableOpacity
+            onPress={() => navigation.navigate('Details', {todo: item})}
             onLongPress={() =>
               Alert.alert(
                 'Tem certeza?',
